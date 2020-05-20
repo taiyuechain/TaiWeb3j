@@ -44,30 +44,6 @@ public class TaiWeb3jRequest {
 
 
     /**
-     * query lock balance
-     */
-    public BigInteger getLockBalance(String address, DefaultBlockParameter defaultBlockParameter) {
-        BigInteger balanceValue = BigInteger.ZERO;
-        if (StringUtils.isBlank(address)) {
-            return balanceValue;
-        }
-        if (defaultBlockParameter == null) {
-            defaultBlockParameter = DefaultBlockParameterName.LATEST;
-        }
-        try {
-            EthGetBalance ethGetBalance = new Request<>("eth_getLockBalance",
-                    Arrays.asList(address, defaultBlockParameter.getValue()),
-                    web3jService,
-                    EthGetBalance.class).send();
-            balanceValue = ethGetBalance.getBalance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return balanceValue;
-    }
-
-
-    /**
      * get FastBlock by fastNumber
      *
      * @param fastBlockNumber
