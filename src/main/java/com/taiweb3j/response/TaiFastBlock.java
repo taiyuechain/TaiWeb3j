@@ -23,16 +23,12 @@ import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.core.Response;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
-public class EtrueFastBlock extends Response<FastBlock> {
+public class TaiFastBlock extends Response<FastBlock> {
 
     @Override
-    @JsonDeserialize(using = EtrueFastBlock.ResponseDeserialiser.class)
+    @JsonDeserialize(using = TaiFastBlock.ResponseDeserialiser.class)
     public void setResult(FastBlock result) {
         super.setResult(result);
     }

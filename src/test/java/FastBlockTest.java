@@ -16,10 +16,6 @@ public class FastBlockTest {
         fastBlockUsage.getFastBlockByNumber();
     }
 
-    @Test
-    public void testGetLockBalance() {
-        fastBlockUsage.getLockBalance();
-    }
 
     @Test
     public void testGetFastBlockByHash() {

@@ -17,11 +17,11 @@ import org.web3j.crypto.SignatureDataOperations;
 
 import java.math.BigInteger;
 
-public class SignedTrueRawTransaction extends TrueRawTransaction implements SignatureDataOperations {
+public class SignedTaiRawTransaction extends TaiRawTransaction implements SignatureDataOperations {
 
     private final Sign.SignatureData signatureData;
 
-    public SignedTrueRawTransaction(
+    public SignedTaiRawTransaction(
             BigInteger nonce,
             BigInteger gasPrice,
             BigInteger gasLimit,
@@ -42,9 +42,9 @@ public class SignedTrueRawTransaction extends TrueRawTransaction implements Sign
     @Override
     public byte[] getEncodedTransaction(Long chainId) {
         if (null == chainId) {
-            return TrueTransactionEncoder.encode(this);
+            return TaiTransactionEncoder.encode(this);
         } else {
-            return TrueTransactionEncoder.encode(this, chainId);
+            return TaiTransactionEncoder.encode(this, chainId);
         }
     }
 }

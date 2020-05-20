@@ -1,21 +1,21 @@
 package com.taiweb3j.response.transaction;
 
 import com.taiweb3j.TaiWeb3jRequest;
-import com.taiweb3j.response.EtrueSendTransaction;
+import com.taiweb3j.response.TaiSendTransaction;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.Sign;
 import org.web3j.utils.Numeric;
 
-public class TrueTransactionManager {
+public class TaiTransactionManager {
 
     public TaiWeb3jRequest taiWeb3JRequest;
     public int chainId;
 
-    private TrueTransactionManager() {
+    private TaiTransactionManager() {
 
     }
 
-    public TrueTransactionManager(TaiWeb3jRequest taiWeb3JRequest, int chainId) {
+    public TaiTransactionManager(TaiWeb3jRequest taiWeb3JRequest, int chainId) {
         this.taiWeb3JRequest = taiWeb3JRequest;
         this.chainId = chainId;
     }
@@ -34,15 +34,15 @@ public class TrueTransactionManager {
 
     /**
      * get signedTxWithFromPrivate
-     * @param trueRawTransaction
+     * @param taiRawTransaction
      * @param fromPrivateKey
      * @return
      */
-    public String signWithFromPrivateKey(TrueRawTransaction trueRawTransaction, String fromPrivateKey) {
+    public String signWithFromPrivateKey(TaiRawTransaction taiRawTransaction, String fromPrivateKey) {
         String signedTxWithFrom = null;
         try {
             Credentials credentials_from = Credentials.create(fromPrivateKey);
-            byte[] signedMessage = TrueTransactionEncoder.signMessageFrom(trueRawTransaction, chainId, credentials_from);
+            byte[] signedMessage = TaiTransactionEncoder.signMessageFrom(taiRawTransaction, chainId, credentials_from);
             signedTxWithFrom = Numeric.toHexString(signedMessage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,12 +62,12 @@ public class TrueTransactionManager {
             System.out.println("sendPaymentTransaction payment address: " + credentials_payment.getAddress());
 
             //通过rawTransaction解码出交易信息，包括发送者签名rsv
-            SignedTrueRawTransaction signtrueRawTransaction = (SignedTrueRawTransaction) TrueTransactionDecoder.decode(signedTxWithFrom);
+            SignedTaiRawTransaction signtrueRawTransaction = (SignedTaiRawTransaction) TaiTransactionDecoder.decode(signedTxWithFrom);
             Sign.SignatureData decode_signatureData = signtrueRawTransaction.getSignatureData();
-            TrueRawTransaction decode_trueRawTransaction = new TrueRawTransaction(signtrueRawTransaction);
+            TaiRawTransaction decode_taiRawTransaction = new TaiRawTransaction(signtrueRawTransaction);
 
-            byte[] signedMessage = TrueTransactionEncoder.
-                    signMessage_payment(decode_trueRawTransaction, decode_signatureData,
+            byte[] signedMessage = TaiTransactionEncoder.
+                    signMessage_payment(decode_taiRawTransaction, decode_signatureData,
                             chainId, credentials_payment);
 
             signedTxWithPayment = Numeric.toHexString(signedMessage);
@@ -84,39 +84,39 @@ public class TrueTransactionManager {
      * @param paymentPrivateKey payment privateKey
      * @return transaction singed with payment privatekey  based on signedTxWithFrom
      */
-    public EtrueSendTransaction signWithPaymentAndSend(String signedTxWithFrom, String paymentPrivateKey) {
+    public TaiSendTransaction signWithPaymentAndSend(String signedTxWithFrom, String paymentPrivateKey) {
         String signedTxWithPayment = signWithPaymentPrivateKey(signedTxWithFrom, paymentPrivateKey);
-        EtrueSendTransaction etrueSendTransaction = taiWeb3JRequest.etrueSendRawTransaction(signedTxWithPayment);
-        return etrueSendTransaction;
+        TaiSendTransaction taiSendTransaction = taiWeb3JRequest.taiSendRawTransaction(signedTxWithPayment);
+        return taiSendTransaction;
     }
 
 
     /**
      * sign with from and payment private
-     * @param trueRawTransaction trueTransaction info
+     * @param taiRawTransaction trueTransaction info
      * @param fromPrivateKey     tx from privatekey
      * @param paymentPrivateKey  tx payment privatekey
      * @return
      */
-    public String signWithFromAndPayment(TrueRawTransaction trueRawTransaction,
+    public String signWithFromAndPayment(TaiRawTransaction taiRawTransaction,
                                          String fromPrivateKey, String paymentPrivateKey) {
         Credentials fromCredentials = Credentials.create(fromPrivateKey);
         Credentials paymentCredentials = Credentials.create(paymentPrivateKey);
-        byte[] signedMessage = TrueTransactionEncoder.signMessage_fromAndPayment(
-                trueRawTransaction, chainId, fromCredentials, paymentCredentials);
+        byte[] signedMessage = TaiTransactionEncoder.signMessage_fromAndPayment(
+                taiRawTransaction, chainId, fromCredentials, paymentCredentials);
         String signedTxWithPayment = Numeric.toHexString(signedMessage);
         return signedTxWithPayment;
     }
 
-    public EtrueSendTransaction signWithFromPaymentAndSend(TrueRawTransaction trueRawTransaction,
-                                                           String fromPrivateKey, String paymentPrivateKey) {
+    public TaiSendTransaction signWithFromPaymentAndSend(TaiRawTransaction taiRawTransaction,
+                                                         String fromPrivateKey, String paymentPrivateKey) {
         Credentials fromCredentials = Credentials.create(fromPrivateKey);
         Credentials paymentCredentials = Credentials.create(paymentPrivateKey);
-        byte[] signedMessage = TrueTransactionEncoder.signMessage_fromAndPayment(
-                trueRawTransaction, chainId, fromCredentials, paymentCredentials);
+        byte[] signedMessage = TaiTransactionEncoder.signMessage_fromAndPayment(
+                taiRawTransaction, chainId, fromCredentials, paymentCredentials);
         String signedWithFromPayment = Numeric.toHexString(signedMessage);
-        EtrueSendTransaction etrueSendTransaction = taiWeb3JRequest.etrueSendRawTransaction(signedWithFromPayment);
-        return etrueSendTransaction;
+        TaiSendTransaction taiSendTransaction = taiWeb3JRequest.taiSendRawTransaction(signedWithFromPayment);
+        return taiSendTransaction;
     }
 
 

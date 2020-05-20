@@ -30,10 +30,5 @@ public class RewardTest extends TaiWeb3jRequestTest {
         rewardUsage.getAddressesSnailReward();
     }
 
-    @Test
-    public void testGetFastBockOfReward() {
-        rewardUsage.getFastBockOfReward();
-    }
-
 
 }

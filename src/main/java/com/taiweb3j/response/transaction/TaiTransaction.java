@@ -21,7 +21,7 @@ import java.math.BigInteger;
 /**
  * Transaction object used by both {@link EthTransaction} and {@link EthBlock}.
  */
-public class TrueTransaction {
+public class TaiTransaction {
     private static final int CHAIN_ID_INC = 35;
     private static final int LOWER_REAL_V = 27;
 
@@ -49,10 +49,10 @@ public class TrueTransaction {
     private String ps;
     private long pv;
 
-    public TrueTransaction() {
+    public TaiTransaction() {
     }
 
-    public TrueTransaction(
+    public TaiTransaction(
             String hash,
             String nonce,
             String blockHash,

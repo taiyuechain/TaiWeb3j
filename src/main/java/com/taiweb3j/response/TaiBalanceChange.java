@@ -25,10 +25,10 @@ import org.web3j.protocol.core.Response;
 import java.io.IOException;
 
 
-public class EtrueBalanceChange extends Response<BalanceChange> {
+public class TaiBalanceChange extends Response<BalanceChange> {
 
     @Override
-    @JsonDeserialize(using = EtrueBalanceChange.ResponseDeserialiser.class)
+    @JsonDeserialize(using = TaiBalanceChange.ResponseDeserialiser.class)
     public void setResult(BalanceChange balanceChange) {
         super.setResult(balanceChange);
     }

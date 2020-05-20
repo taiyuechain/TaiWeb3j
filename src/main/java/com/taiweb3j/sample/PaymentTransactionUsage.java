@@ -2,9 +2,9 @@ package com.taiweb3j.sample;
 
 import com.taiweb3j.TaiWeb3jRequest;
 import com.taiweb3j.common.Constant;
-import com.taiweb3j.response.EtrueSendTransaction;
-import com.taiweb3j.response.transaction.TrueRawTransaction;
-import com.taiweb3j.response.transaction.TrueTransactionManager;
+import com.taiweb3j.response.TaiSendTransaction;
+import com.taiweb3j.response.transaction.TaiRawTransaction;
+import com.taiweb3j.response.transaction.TaiTransactionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -17,15 +17,15 @@ public class PaymentTransactionUsage extends TaiWeb3jTestNet {
 
     public String signPaymentTxWithFrom() {
         String fromSignedTxStr = null;
-        TrueTransactionManager trueTransactionManager = new TrueTransactionManager(taiWeb3JRequest, chainId);
+        TaiTransactionManager taiTransactionManager = new TaiTransactionManager(taiWeb3JRequest, chainId);
         try {
             //get nonce of from address
             EthGetTransactionCount ethGetTransactionCount = web3j.ethGetTransactionCount(fromAddress, DefaultBlockParameterName.LATEST).sendAsync().get();
             BigInteger nonce = ethGetTransactionCount.getTransactionCount();
-            TrueRawTransaction trueRawTransaction = TrueRawTransaction.createTruePaymentTransaction(nonce, Constant.DEFAULT_GASPRICE,
+            TaiRawTransaction taiRawTransaction = TaiRawTransaction.creattaiPaymentTransaction(nonce, Constant.DEFAULT_GASPRICE,
                     Constant.DEFAULT_GASLIMIT, toAddress, Constant.DEFAULT_VALUE, null, paymentAddress);
 
-            fromSignedTxStr = trueTransactionManager.signWithFromPrivateKey(trueRawTransaction, fromPrivatekey);
+            fromSignedTxStr = taiTransactionManager.signWithFromPrivateKey(taiRawTransaction, fromPrivatekey);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,17 +37,17 @@ public class PaymentTransactionUsage extends TaiWeb3jTestNet {
         String txHash = null;
         try {
             TaiWeb3jRequest taiWeb3JRequest = new TaiWeb3jRequest(Constant.RPC_TESTNET_URL);
-            TrueTransactionManager trueTransactionManager = new TrueTransactionManager(taiWeb3JRequest,
+            TaiTransactionManager taiTransactionManager = new TaiTransactionManager(taiWeb3JRequest,
                     chainId);
 
             //payment sign and send transaction
-            EtrueSendTransaction etrueSendTransaction = trueTransactionManager.signWithPaymentAndSend(signedTxWithFrom, paymentPrivateKey);
+            TaiSendTransaction taiSendTransaction = taiTransactionManager.signWithPaymentAndSend(signedTxWithFrom, paymentPrivateKey);
 
 
-            if (etrueSendTransaction != null && etrueSendTransaction.hasError()) {
-                logger.error("sendPaymentTransactionWithSigned error=[{}] ", etrueSendTransaction.getError().getMessage());
+            if (taiSendTransaction != null && taiSendTransaction.hasError()) {
+                logger.error("sendPaymentTransactionWithSigned error=[{}] ", taiSendTransaction.getError().getMessage());
             }
-            txHash = etrueSendTransaction.getTrueTransactionHash();
+            txHash = taiSendTransaction.getTrueTransactionHash();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,18 +63,18 @@ public class PaymentTransactionUsage extends TaiWeb3jTestNet {
             BigInteger nonce = ethGetTransactionCount.getTransactionCount();
 
             //create trueRawTransaction
-            TrueRawTransaction trueRawTransaction = TrueRawTransaction.createTruePaymentTransaction(nonce, Constant.DEFAULT_GASPRICE,
+            TaiRawTransaction taiRawTransaction = TaiRawTransaction.creattaiPaymentTransaction(nonce, Constant.DEFAULT_GASPRICE,
                     Constant.DEFAULT_GASLIMIT, toAddress, Constant.DEFAULT_VALUE, null, paymentAddress);
 
-            TrueTransactionManager trueTransactionManager = new TrueTransactionManager(taiWeb3JRequest, chainId);
+            TaiTransactionManager taiTransactionManager = new TaiTransactionManager(taiWeb3JRequest, chainId);
 
 
-            EtrueSendTransaction etrueSendTransaction = trueTransactionManager.signWithFromPaymentAndSend(
-                    trueRawTransaction, fromPrivatekey, paymentPrivateKey);
-            if (etrueSendTransaction != null && etrueSendTransaction.hasError()) {
-                logger.error("sendPaymentTransactionWithSigned error=[{}] ", etrueSendTransaction.getError().getMessage());
+            TaiSendTransaction taiSendTransaction = taiTransactionManager.signWithFromPaymentAndSend(
+                    taiRawTransaction, fromPrivatekey, paymentPrivateKey);
+            if (taiSendTransaction != null && taiSendTransaction.hasError()) {
+                logger.error("sendPaymentTransactionWithSigned error=[{}] ", taiSendTransaction.getError().getMessage());
             }
-            txHash = etrueSendTransaction.getTrueTransactionHash();
+            txHash = taiSendTransaction.getTrueTransactionHash();
         } catch (Exception e) {
             e.printStackTrace();
         }

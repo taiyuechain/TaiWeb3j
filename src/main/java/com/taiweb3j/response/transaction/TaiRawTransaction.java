@@ -9,7 +9,7 @@ import java.math.BigInteger;
  * For the specification, refer to p4 of the <a href="http://gavwood.com/paper.pdf">
  * yellow paper</a>.
  */
-public class TrueRawTransaction {
+public class TaiRawTransaction {
 
     private BigInteger nonce;
     private BigInteger gasPrice;
@@ -21,8 +21,8 @@ public class TrueRawTransaction {
     private String payment;//代付者账户
     private BigInteger fee;//发送者的扣费数量
 
-    protected TrueRawTransaction(BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to,
-                                 BigInteger value, String data, BigInteger fee, String payment) {
+    protected TaiRawTransaction(BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to,
+                                BigInteger value, String data, BigInteger fee, String payment) {
         this.nonce = nonce;
         this.gasPrice = gasPrice;
         this.gasLimit = gasLimit;
@@ -38,7 +38,7 @@ public class TrueRawTransaction {
         this.data = Numeric.cleanHexPrefix(data);
     }
 
-    public TrueRawTransaction(SignedTrueRawTransaction signedTrueRawTransaction) {
+    public TaiRawTransaction(SignedTaiRawTransaction signedTrueRawTransaction) {
         this.nonce = signedTrueRawTransaction.getNonce();
         this.gasPrice = signedTrueRawTransaction.getGasPrice();
         this.gasLimit = signedTrueRawTransaction.getGasLimit();
@@ -65,10 +65,10 @@ public class TrueRawTransaction {
      * @param payment
      * @return
      */
-    public static TrueRawTransaction createTruePaymentTransaction(
+    public static TaiRawTransaction creattaiPaymentTransaction(
             BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to,
             BigInteger value, String data, String payment) {
-        return new TrueRawTransaction(nonce, gasPrice, gasLimit, to, value, data, null, payment);
+        return new TaiRawTransaction(nonce, gasPrice, gasLimit, to, value, data, null, payment);
     }
 
     /**
@@ -83,10 +83,10 @@ public class TrueRawTransaction {
      * @param fee
      * @return
      */
-    public static TrueRawTransaction createTrueFeeTransaction(
+    public static TaiRawTransaction creattaiFeeTransaction(
             BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to,
             BigInteger value, String data, BigInteger fee) {
-        return new TrueRawTransaction(nonce, gasPrice, gasLimit, to, value, data, fee, null);
+        return new TaiRawTransaction(nonce, gasPrice, gasLimit, to, value, data, fee, null);
     }
 
     /**
@@ -102,10 +102,10 @@ public class TrueRawTransaction {
      * @param payment
      * @return
      */
-    public static TrueRawTransaction createTruePaymentAndFeeTransaction(
+    public static TaiRawTransaction creattaiPaymentAndFeeTransaction(
             BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to,
             BigInteger value, String data, BigInteger fee, String payment) {
-        return new TrueRawTransaction(nonce, gasPrice, gasLimit, to, value, data, fee, payment);
+        return new TaiRawTransaction(nonce, gasPrice, gasLimit, to, value, data, fee, payment);
     }
 
     /**
@@ -119,10 +119,10 @@ public class TrueRawTransaction {
      * @param data
      * @return
      */
-    public static TrueRawTransaction createTransaction(
+    public static TaiRawTransaction createTransaction(
             BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to,
             BigInteger value, String data) {
-        return new TrueRawTransaction(nonce, gasPrice, gasLimit, to, value, data, null, null);
+        return new TaiRawTransaction(nonce, gasPrice, gasLimit, to, value, data, null, null);
     }
 
 

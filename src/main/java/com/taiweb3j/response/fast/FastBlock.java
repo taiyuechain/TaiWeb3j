@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.taiweb3j.response.committee.BlockMember;
-import com.taiweb3j.response.transaction.TrueTransaction;
+import com.taiweb3j.response.transaction.TaiTransaction;
 import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.utils.Numeric;
 
@@ -285,8 +285,8 @@ public class FastBlock {
         }
     }
 
-    public static class TransactionObject extends TrueTransaction
-            implements TransactionResult<TrueTransaction> {
+    public static class TransactionObject extends TaiTransaction
+            implements TransactionResult<TaiTransaction> {
         public TransactionObject() {
         }
 
@@ -309,7 +309,7 @@ public class FastBlock {
         }
 
         @Override
-        public TrueTransaction get() {
+        public TaiTransaction get() {
             return this;
         }
     }

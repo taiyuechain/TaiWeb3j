@@ -18,22 +18,22 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.taiweb3j.response.snail.SnailRewardContenet;
+import com.taiweb3j.response.Reward.ChainRewardContent;
 import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.core.Response;
 
 import java.io.IOException;
 
 
-public class EtrueSnailRewardContent extends Response<SnailRewardContenet> {
+public class TaiChainRewardContent extends Response<ChainRewardContent> {
 
     @Override
-    @JsonDeserialize(using = EtrueSnailRewardContent.ResponseDeserialiser.class)
-    public void setResult(SnailRewardContenet snailRewardContenet) {
-        super.setResult(snailRewardContenet);
+    @JsonDeserialize(using = TaiChainRewardContent.ResponseDeserialiser.class)
+    public void setResult(ChainRewardContent chainRewardContent) {
+        super.setResult(chainRewardContent);
     }
 
-    public SnailRewardContenet getSnailRewardContenet() {
+    public ChainRewardContent getChainRewardContent() {
         return getResult();
     }
 
@@ -41,15 +41,15 @@ public class EtrueSnailRewardContent extends Response<SnailRewardContenet> {
         return super.getError().getMessage();
     }
 
-    public static class ResponseDeserialiser extends JsonDeserializer<SnailRewardContenet> {
+    public static class ResponseDeserialiser extends JsonDeserializer<ChainRewardContent> {
         private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
 
         @Override
-        public SnailRewardContenet deserialize(
+        public ChainRewardContent deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
             if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                return objectReader.readValue(jsonParser, SnailRewardContenet.class);
+                return objectReader.readValue(jsonParser, ChainRewardContent.class);
             } else {
                 return null; // null is wrapped by Optional in above getter
             }

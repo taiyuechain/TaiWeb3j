@@ -34,7 +34,6 @@ public class TransactionClientUsage extends TaiWeb3jTestNet {
             if (ethGetBalance != null) {
                 balance = ethGetBalance.getBalance();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

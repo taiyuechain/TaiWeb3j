@@ -10,12 +10,6 @@ import java.math.BigInteger;
 public class FastBlockUsage extends TaiWeb3jTestNet {
     private static final Logger logger = LoggerFactory.getLogger(FastBlockUsage.class);
 
-    public void getLockBalance() {
-        String address = "0x710146e71a7E9Ce9124c6A8f82CE47dA56596556";
-        BigInteger lockBalance = taiWeb3JRequest.getLockBalance(address,null);
-        System.out.println(lockBalance);
-    }
-
     public void getFastBlockByNumber() {
         BigInteger fastNumber = new BigInteger("100");
         FastBlock fastBlock = taiWeb3JRequest.getFastBlockByNumber(fastNumber, true);

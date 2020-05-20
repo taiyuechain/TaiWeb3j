@@ -24,7 +24,7 @@ public class RewardUsage extends TaiWeb3jTestNet {
 
     /**
      * get snailReward content  by snailNumber
-     * call etrue_getChainRewardContent by empty address
+     * call tai_getChainRewardContent by empty address
      */
     public void getSnailRewardContent() {
         BigInteger snailNumber = new BigInteger("55000");
@@ -44,13 +44,4 @@ public class RewardUsage extends TaiWeb3jTestNet {
         Map<String, BigInteger> addressSnailReward = taiWeb3JRequest.getAddressesSnailReward(snailNumber);
         logger.info("addressSnailReward=[{}]", addressSnailReward);
     }
-
-    public void getFastBockOfReward() {
-        BigInteger snailNumber = new BigInteger("1");
-        FastBlock fastBlock = taiWeb3JRequest.getFastBockOfReward(snailNumber);
-        logger.info("fastBlock=[{}]", fastBlock);
-        System.out.println("fastBlock="+fastBlock);
-    }
-
-
 }

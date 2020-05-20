@@ -1,16 +1,17 @@
 package com.taiweb3j;
 
 import com.taiweb3j.common.AddressConstant;
-import com.taiweb3j.response.*;
-import com.taiweb3j.response.EtrueSnailBlockNumber;
+import com.taiweb3j.common.Constant;
 import com.taiweb3j.response.Reward.ChainRewardContent;
 import com.taiweb3j.response.Reward.RewardInfo;
 import com.taiweb3j.response.Reward.SARewardInfos;
+import com.taiweb3j.response.*;
 import com.taiweb3j.response.committee.CommitteeInfo;
 import com.taiweb3j.response.fast.FastBlock;
-import com.taiweb3j.response.snail.*;
-import com.taiweb3j.response.staking.AllStakingAccount;
-import com.taiweb3j.response.staking.StakingAccountInfo;
+import com.taiweb3j.response.snail.BalanceChange;
+import com.taiweb3j.response.snail.FastBalanceChange;
+import com.taiweb3j.response.snail.SnailBlock;
+import com.taiweb3j.response.snail.SnailRewardContenet;
 import org.apache.commons.lang3.StringUtils;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.DefaultBlockParameter;
@@ -18,11 +19,13 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.Request;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
-import com.taiweb3j.common.Constant;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TaiWeb3jRequest {
     public Web3jService web3jService = null;
@@ -74,12 +77,12 @@ public class TaiWeb3jRequest {
     public FastBlock getFastBlockByNumber(BigInteger fastBlockNumber, boolean returnFullTransactionObjects) {
         FastBlock fastBlock = null;
         try {
-            EtrueFastBlock etrueFastBlock = new Request<>(
+            TaiFastBlock taiFastBlock = new Request<>(
                     Constant.BLOCK_BYNUMBER,
                     Arrays.asList(DefaultBlockParameter.valueOf(fastBlockNumber).getValue(), returnFullTransactionObjects),
                     web3jService,
-                    EtrueFastBlock.class).send();
-            fastBlock = etrueFastBlock.getFastBlock();
+                    TaiFastBlock.class).send();
+            fastBlock = taiFastBlock.getFastBlock();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,12 +99,12 @@ public class TaiWeb3jRequest {
     public FastBlock getFastBlockByHash(String fastHash, boolean returnFullTransactionObjects) {
         FastBlock fastBlock = null;
         try {
-            EtrueFastBlock etrueFastBlock = new Request<>(
+            TaiFastBlock taiFastBlock = new Request<>(
                     Constant.BLOCK_BYHASH,
                     Arrays.asList(fastHash, returnFullTransactionObjects),
                     web3jService,
-                    EtrueFastBlock.class).send();
-            fastBlock = etrueFastBlock.getFastBlock();
+                    TaiFastBlock.class).send();
+            fastBlock = taiFastBlock.getFastBlock();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,12 +119,12 @@ public class TaiWeb3jRequest {
     public BigInteger getCurrentFastNumber() {
         BigInteger fastNumber = null;
         try {
-            EtrueFastBlockNumber etrueFastBlockNumber = new Request<>(
+            TaiFastBlockNumber taiFastBlockNumber = new Request<>(
                     Constant.CURRENT_BLOCK_NUMBER,
                     Arrays.asList(),
                     web3jService,
-                    EtrueFastBlockNumber.class).send();
-            fastNumber = etrueFastBlockNumber.getBlockNumber();
+                    TaiFastBlockNumber.class).send();
+            fastNumber = taiFastBlockNumber.getBlockNumber();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,12 +140,12 @@ public class TaiWeb3jRequest {
     public Map<String, String> getSnailBalanceChange(BigInteger snailBlockNumber) {
         Map<String, String> addrWithBalance = new HashMap<String, String>();
         try {
-            EtrueBalanceChange etrueBalanceChange = new Request<>(
+            TaiBalanceChange taiBalanceChange = new Request<>(
                     Constant.BALANCE_CHANGE_BY_SNAIL_NUMBER,
                     Arrays.asList(DefaultBlockParameter.valueOf(snailBlockNumber).getValue()),
                     web3jService,
-                    EtrueBalanceChange.class).send();
-            BalanceChange balanceChange = etrueBalanceChange.getBalanceChange();
+                    TaiBalanceChange.class).send();
+            BalanceChange balanceChange = taiBalanceChange.getBalanceChange();
             if (balanceChange != null) {
                 addrWithBalance = balanceChange.getAddrWithBalance();
                 /*for (Map.Entry<String, String> entry : addrWithBalance.entrySet()) {
@@ -172,12 +175,12 @@ public class TaiWeb3jRequest {
         }
         DefaultBlockParameter blockParameter = DefaultBlockParameter.valueOf(snailNumber);
         try {
-            EtrueChainRewardContent etrueChainRewardContent = new Request<>(
+            TaiChainRewardContent taiChainRewardContent = new Request<>(
                     Constant.CHAIN_REWARD_CONTENT,
                     Arrays.asList(blockParameter.getValue(), AddressConstant.EMPTY_ADDRESS),
                     web3jService,
-                    EtrueChainRewardContent.class).send();
-            chainRewardContent = etrueChainRewardContent.getChainRewardContent();
+                    TaiChainRewardContent.class).send();
+            chainRewardContent = taiChainRewardContent.getChainRewardContent();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,12 +194,12 @@ public class TaiWeb3jRequest {
         }
         DefaultBlockParameter blockParameter = DefaultBlockParameter.valueOf(snailNumber);
         try {
-            EtrueSnailRewardContent etrueSnailRewardContent = new Request<>(
+            TaiSnailRewardContent taiSnailRewardContent = new Request<>(
                     Constant.SNAIL_REWARD_CONTENT,
                     Arrays.asList(blockParameter.getValue()),
                     web3jService,
-                    EtrueSnailRewardContent.class).send();
-            snailRewardContenet = etrueSnailRewardContent.getSnailRewardContenet();
+                    TaiSnailRewardContent.class).send();
+            snailRewardContenet = taiSnailRewardContent.getSnailRewardContenet();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -272,12 +275,12 @@ public class TaiWeb3jRequest {
     public SnailBlock getSnailBlockByNumber(BigInteger snailNumber, boolean inclFruit) {
         SnailBlock snailBlock = null;
         try {
-            EtrueSnailBlock etrueSnailBlock = new Request<>(
-                    "etrue_getSnailBlockByNumber",
+            TaiSnailBlock taiSnailBlock = new Request<>(
+                    "tai_getSnailBlockByNumber",
                     Arrays.asList(DefaultBlockParameter.valueOf(snailNumber).getValue(), inclFruit),
                     web3jService,
-                    EtrueSnailBlock.class).send();
-            snailBlock = etrueSnailBlock.getSnailBlock();
+                    TaiSnailBlock.class).send();
+            snailBlock = taiSnailBlock.getSnailBlock();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -293,12 +296,12 @@ public class TaiWeb3jRequest {
     public String getSnailHashByNumber(BigInteger snailNumber) {
         String snailHash = null;
         try {
-            EtrueSnailHash etrueSnailHash = new Request<>(
+            TaiSnailHash taiSnailHash = new Request<>(
                     Constant.SNAIL_HASH_BY_NUMBER,
                     Arrays.asList(DefaultBlockParameter.valueOf(snailNumber).getValue()),
                     web3jService,
-                    EtrueSnailHash.class).send();
-            snailHash = etrueSnailHash.getSnailHash();
+                    TaiSnailHash.class).send();
+            snailHash = taiSnailHash.getSnailHash();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -315,12 +318,12 @@ public class TaiWeb3jRequest {
     public SnailBlock getSnailBlockByHash(String snailHash, boolean inclFruit) {
         SnailBlock snailBlock = null;
         try {
-            EtrueSnailBlock etrueSnailBlock = new Request<>(
+            TaiSnailBlock taiSnailBlock = new Request<>(
                     Constant.SNAIL_BLOCK_BY_HASH,
                     Arrays.asList(snailHash, inclFruit),
                     web3jService,
-                    EtrueSnailBlock.class).send();
-            snailBlock = etrueSnailBlock.getSnailBlock();
+                    TaiSnailBlock.class).send();
+            snailBlock = taiSnailBlock.getSnailBlock();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -335,12 +338,12 @@ public class TaiWeb3jRequest {
     public BigInteger getCurrentSnailNumber() {
         BigInteger snailNumber = null;
         try {
-            EtrueSnailBlockNumber etrueSnailBlockNumber = new Request<>(
+            TaiSnailBlockNumber taiSnailBlockNumber = new Request<>(
                     Constant.SNAIL_BLOCK_NUMBER,
                     Arrays.asList(),
                     web3jService,
-                    EtrueSnailBlockNumber.class).send();
-            snailNumber = etrueSnailBlockNumber.getSnailBlockNumber();
+                    TaiSnailBlockNumber.class).send();
+            snailNumber = taiSnailBlockNumber.getSnailBlockNumber();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -357,12 +360,12 @@ public class TaiWeb3jRequest {
     public CommitteeInfo getCommitteeByNumber(BigInteger committeeNumber) {
         CommitteeInfo committeeInfo = null;
         try {
-            EtrueCommittee etrueCommittee = new Request<>(
+            TaiCommittee taiCommittee = new Request<>(
                     Constant.COMMITTEE_BY_NUMBER,
                     Arrays.asList(DefaultBlockParameter.valueOf(committeeNumber).getValue()),
                     web3jService,
-                    EtrueCommittee.class).send();
-            committeeInfo = etrueCommittee.getCommittee();
+                    TaiCommittee.class).send();
+            committeeInfo = taiCommittee.getCommittee();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -377,12 +380,12 @@ public class TaiWeb3jRequest {
     public Integer getCurrentCommitteeNumber() {
         Integer currentCommitteeNumber = null;
         try {
-            EtrueCommitteeNumber etrueCommitteeNumber = new Request<>(
+            TaiCommitteeNumber taiCommitteeNumber = new Request<>(
                     Constant.CURRENT_COMMITTEE_NUMBER,
                     Arrays.asList(),
                     web3jService,
-                    EtrueCommitteeNumber.class).send();
-            currentCommitteeNumber = etrueCommitteeNumber.getCommitteeNumber();
+                    TaiCommitteeNumber.class).send();
+            currentCommitteeNumber = taiCommitteeNumber.getCommitteeNumber();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -395,18 +398,18 @@ public class TaiWeb3jRequest {
      * @param signedTransactionData
      * @return
      */
-    public EtrueSendTransaction etrueSendRawTransaction(String signedTransactionData) {
-        EtrueSendTransaction etrueSendTrueTransaction = null;
+    public TaiSendTransaction taiSendRawTransaction(String signedTransactionData) {
+        TaiSendTransaction taiSendTrueTransaction = null;
         try {
-            etrueSendTrueTransaction = new Request<>(
+            taiSendTrueTransaction = new Request<>(
                     Constant.SEND_TRUE_RAW_TRANSACTION,
                     Arrays.asList(signedTransactionData),
                     web3jService,
-                    EtrueSendTransaction.class).send();
+                    TaiSendTransaction.class).send();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return etrueSendTrueTransaction;
+        return taiSendTrueTransaction;
     }
 
     /**
@@ -418,104 +421,16 @@ public class TaiWeb3jRequest {
     public FastBalanceChange getStateChangeByFastNumber(BigInteger fastNumber) {
         FastBalanceChange fastBalanceChange = null;
         try {
-            EtrueFastBalanceChange etrueFastBalanceChange = new Request<>(
+            TaiFastBalanceChange taiFastBalanceChange = new Request<>(
                     Constant.STATE_CHANGE_BY_FAST_NUMBER,
                     Arrays.asList(DefaultBlockParameter.valueOf(fastNumber).getValue()),
                     web3jService,
-                    EtrueFastBalanceChange.class).send();
-            fastBalanceChange = etrueFastBalanceChange.getFastBalanceChange();
+                    TaiFastBalanceChange.class).send();
+            fastBalanceChange = taiFastBalanceChange.getFastBalanceChange();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return fastBalanceChange;
-    }
-
-
-    /**
-     * get staking info by account
-     *
-     * @param account
-     * @return
-     */
-    public StakingAccountInfo getStakingAccountInfo(String account) {
-        StakingAccountInfo stakingAccountInfo = null;
-        try {
-            EtrueStakingAccountInfo etrueStakingAccountInfo = new Request<>(
-                    Constant.STAKING_ACCOUNT,
-                    Arrays.asList(
-                            DefaultBlockParameterName.LATEST,
-                            account),
-                    web3jService,
-                    EtrueStakingAccountInfo.class).send();
-            stakingAccountInfo = etrueStakingAccountInfo.getStakingAccountInfo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return stakingAccountInfo;
-    }
-
-    /**
-     * get all staking account infos
-     *
-     * @return
-     */
-    public AllStakingAccount getAllStakingAccount() {
-        AllStakingAccount allStakingAccount = null;
-        try {
-            EtrueAllStakingAccountInfo etrueAllStakingAccountInfo = new Request<>(
-                    Constant.ALL_STAKING_ACCOUNT,
-                    Arrays.asList(DefaultBlockParameterName.LATEST),
-                    web3jService,
-                    EtrueAllStakingAccountInfo.class).send();
-            allStakingAccount = etrueAllStakingAccountInfo.getAllStakingAccount();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return allStakingAccount;
-    }
-
-    /**
-     * get the proceeds of all the delegate addresses under a pledge node(stakingAddress) in snailNumber block
-     *
-     * @param snailNumber
-     * @param stakingAddress
-     * @return
-     */
-    public ChainRewardContent getChainRewardContent(BigInteger snailNumber, String stakingAddress) {
-        ChainRewardContent chainRewardContent = null;
-
-        if (snailNumber == null || StringUtils.isBlank(stakingAddress)) {
-            return null;
-        }
-        DefaultBlockParameter blockParameter = DefaultBlockParameter.valueOf(snailNumber);
-        try {
-            EtrueChainRewardContent etrueChainRewardContent = new Request<>(
-                    Constant.CHAIN_REWARD_CONTENT,
-                    Arrays.asList(blockParameter.getValue(), stakingAddress),
-                    web3jService,
-                    EtrueChainRewardContent.class).send();
-            chainRewardContent = etrueChainRewardContent.getChainRewardContent();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return chainRewardContent;
-    }
-
-
-    public FastBlock getFastBockOfReward(BigInteger snailRewardNumber) {
-        DefaultBlockParameter blockParameter = DefaultBlockParameter.valueOf(snailRewardNumber);
-        FastBlock fastBlock = null;
-        try {
-            EtrueFastBlock etrueFastBlock = new Request<>(
-                    Constant.FAST_BLOCK_OF_REWARD,
-                    Arrays.asList(blockParameter.getValue()),
-                    web3jService,
-                    EtrueFastBlock.class).send();
-            fastBlock = etrueFastBlock.getFastBlock();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return fastBlock;
     }
 
 

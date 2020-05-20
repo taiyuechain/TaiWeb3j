@@ -18,22 +18,22 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.taiweb3j.response.Reward.ChainRewardContent;
+import com.taiweb3j.response.snail.FastBalanceChange;
 import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.core.Response;
 
 import java.io.IOException;
 
 
-public class EtrueChainRewardContent extends Response<ChainRewardContent> {
+public class TaiFastBalanceChange extends Response<FastBalanceChange> {
 
     @Override
-    @JsonDeserialize(using = EtrueChainRewardContent.ResponseDeserialiser.class)
-    public void setResult(ChainRewardContent chainRewardContent) {
-        super.setResult(chainRewardContent);
+    @JsonDeserialize(using = TaiFastBalanceChange.ResponseDeserialiser.class)
+    public void setResult(FastBalanceChange fastBalanceChange) {
+        super.setResult(fastBalanceChange);
     }
 
-    public ChainRewardContent getChainRewardContent() {
+    public FastBalanceChange getFastBalanceChange() {
         return getResult();
     }
 
@@ -41,15 +41,15 @@ public class EtrueChainRewardContent extends Response<ChainRewardContent> {
         return super.getError().getMessage();
     }
 
-    public static class ResponseDeserialiser extends JsonDeserializer<ChainRewardContent> {
+    public static class ResponseDeserialiser extends JsonDeserializer<FastBalanceChange> {
         private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
 
         @Override
-        public ChainRewardContent deserialize(
+        public FastBalanceChange deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
             if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                return objectReader.readValue(jsonParser, ChainRewardContent.class);
+                return objectReader.readValue(jsonParser, FastBalanceChange.class);
             } else {
                 return null; // null is wrapped by Optional in above getter
             }

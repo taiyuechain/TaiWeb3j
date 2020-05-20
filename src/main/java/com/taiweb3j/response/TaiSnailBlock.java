@@ -25,10 +25,10 @@ import org.web3j.protocol.core.Response;
 import java.io.IOException;
 
 
-public class EtrueSnailBlock extends Response<SnailBlock> {
+public class TaiSnailBlock extends Response<SnailBlock> {
 
     @Override
-    @JsonDeserialize(using = EtrueSnailBlock.ResponseDeserialiser.class)
+    @JsonDeserialize(using = TaiSnailBlock.ResponseDeserialiser.class)
     public void setResult(SnailBlock result) {
         super.setResult(result);
     }

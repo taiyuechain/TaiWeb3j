@@ -19,54 +19,54 @@ import java.util.List;
  * Create RLP encoded transaction, implementation as per p4 of the <a href="http://gavwood.com/paper.pdf">yellow
  * paper</a>.
  */
-public class TrueTransactionEncoder {
+public class TaiTransactionEncoder {
 
     private static final int CHAIN_ID_INC = 35;
     private static final int LOWER_REAL_V = 27;
 
     //发送者签名，chainId 为空
-    public static byte[] signMessage(TrueRawTransaction trueRawTransaction, Credentials credentials) {
-        byte[] encodedTransaction = encode(trueRawTransaction);
+    public static byte[] signMessage(TaiRawTransaction taiRawTransaction, Credentials credentials) {
+        byte[] encodedTransaction = encode(taiRawTransaction);
         Sign.SignatureData signatureData = Sign.signMessage(
                 encodedTransaction, credentials.getEcKeyPair());
-        return encode(trueRawTransaction, signatureData);
+        return encode(taiRawTransaction, signatureData);
     }
 
     //发送者签名
     public static byte[] signMessageFrom(
-            TrueRawTransaction trueRawTransaction, long chainId, Credentials credentials) {
-        byte[] encodedTransaction = encode(trueRawTransaction, chainId);
+            TaiRawTransaction taiRawTransaction, long chainId, Credentials credentials) {
+        byte[] encodedTransaction = encode(taiRawTransaction, chainId);
 
         Sign.SignatureData signatureData = Sign.signMessage(encodedTransaction, credentials.getEcKeyPair());
         Sign.SignatureData eip155SignatureData = createEip155SignatureData(signatureData, chainId);
 
-        return encode(trueRawTransaction, eip155SignatureData);
+        return encode(taiRawTransaction, eip155SignatureData);
     }
 
     //代付者签名
-    public static byte[] signMessage_payment(TrueRawTransaction trueRawTransaction, SignatureData eip155SignatureData, long chainId, Credentials credentials_payment) {
+    public static byte[] signMessage_payment(TaiRawTransaction taiRawTransaction, SignatureData eip155SignatureData, long chainId, Credentials credentials_payment) {
         // 二次签名
-        byte[] encodedTransactionP = encodeP(trueRawTransaction, eip155SignatureData, chainId);
+        byte[] encodedTransactionP = encodeP(taiRawTransaction, eip155SignatureData, chainId);
         Sign.SignatureData signatureDataP = Sign.signMessage(encodedTransactionP, credentials_payment.getEcKeyPair());
         Sign.SignatureData eip155SignatureDataP = createEip155SignatureData(signatureDataP, chainId);
 
-        return encodeP(trueRawTransaction, eip155SignatureData, eip155SignatureDataP);
+        return encodeP(taiRawTransaction, eip155SignatureData, eip155SignatureDataP);
     }
 
     //发送者和代付者签名
-    public static byte[] signMessage_fromAndPayment(TrueRawTransaction trueRawTransaction, long chainId,
+    public static byte[] signMessage_fromAndPayment(TaiRawTransaction taiRawTransaction, long chainId,
                                                     Credentials credentials, Credentials credentials_payment) {
 
-        byte[] encodedTransaction = encode(trueRawTransaction, chainId);
+        byte[] encodedTransaction = encode(taiRawTransaction, chainId);
         Sign.SignatureData signatureData = Sign.signMessage(encodedTransaction, credentials.getEcKeyPair());
         Sign.SignatureData eip155SignatureData = createEip155SignatureData(signatureData, chainId);
 
         // 二次签名
-        byte[] encodedTransactionP = encodeP(trueRawTransaction, eip155SignatureData, chainId);
+        byte[] encodedTransactionP = encodeP(taiRawTransaction, eip155SignatureData, chainId);
         Sign.SignatureData signatureDataP = Sign.signMessage(encodedTransactionP, credentials_payment.getEcKeyPair());
         Sign.SignatureData eip155SignatureDataP = createEip155SignatureData(signatureDataP, chainId);
 
-        return encodeP(trueRawTransaction, eip155SignatureData, eip155SignatureDataP);
+        return encodeP(taiRawTransaction, eip155SignatureData, eip155SignatureDataP);
     }
 
 
@@ -79,15 +79,15 @@ public class TrueTransactionEncoder {
         return new Sign.SignatureData(v.toByteArray(), signatureData.getR(), signatureData.getS());
     }
 
-    public static byte[] encode(TrueRawTransaction trueRawTransaction) {
-        return encode(trueRawTransaction, null);
+    public static byte[] encode(TaiRawTransaction taiRawTransaction) {
+        return encode(taiRawTransaction, null);
     }
 
-    public static byte[] encode(TrueRawTransaction trueRawTransaction, long chainId) {
+    public static byte[] encode(TaiRawTransaction taiRawTransaction, long chainId) {
 //        BigInteger v = BigInteger.valueOf(chainId);
 //        Sign.SignatureData signatureData = new Sign.SignatureData(v.toByteArray(), new byte[]{}, new byte[]{});
         Sign.SignatureData signatureData = new Sign.SignatureData(longToBytes(chainId), new byte[] {}, new byte[] {});
-        return encode(trueRawTransaction, signatureData);
+        return encode(taiRawTransaction, signatureData);
     }
 
     private static byte[] longToBytes(long x) {
@@ -104,35 +104,35 @@ public class TrueTransactionEncoder {
 //        return encodeP(trueRawTransaction, signatureData, signatureDataP);
 //    }
 
-    public static byte[] encodeP(TrueRawTransaction trueRawTransaction, Sign.SignatureData signatureData, long chainId) {
+    public static byte[] encodeP(TaiRawTransaction taiRawTransaction, Sign.SignatureData signatureData, long chainId) {
         BigInteger v = BigInteger.valueOf(chainId);
         Sign.SignatureData signatureDataP = new Sign.SignatureData(v.toByteArray(), new byte[]{}, new byte[]{});
 //        Sign.SignatureData signatureDataP = new Sign.SignatureData(longToBytes(chainId), new byte[] {}, new byte[] {});
-        return encodeP(trueRawTransaction, signatureData, signatureDataP);
+        return encodeP(taiRawTransaction, signatureData, signatureDataP);
     }
 
-    private static byte[] encode(TrueRawTransaction trueRawTransaction, Sign.SignatureData signatureData) {
-        List<RlpType> values = asRlpValues(trueRawTransaction, signatureData);
+    private static byte[] encode(TaiRawTransaction taiRawTransaction, Sign.SignatureData signatureData) {
+        List<RlpType> values = asRlpValues(taiRawTransaction, signatureData);
         RlpList rlpList = new RlpList(values);
         return RlpEncoder.encode(rlpList);
     }
 
-    private static byte[] encodeP(TrueRawTransaction trueRawTransaction, Sign.SignatureData signatureData,
+    private static byte[] encodeP(TaiRawTransaction taiRawTransaction, Sign.SignatureData signatureData,
                                   Sign.SignatureData signatureDataP) {
-        List<RlpType> values = asRlpValuesP(trueRawTransaction, signatureData, signatureDataP);
+        List<RlpType> values = asRlpValuesP(taiRawTransaction, signatureData, signatureDataP);
         RlpList rlpList = new RlpList(values);
         return RlpEncoder.encode(rlpList);
     }
 
-    static List<RlpType> asRlpValues(TrueRawTransaction trueRawTransaction, Sign.SignatureData signatureData) {
+    static List<RlpType> asRlpValues(TaiRawTransaction taiRawTransaction, Sign.SignatureData signatureData) {
         List<RlpType> result = new ArrayList<>();
 
-        result.add(RlpString.create(trueRawTransaction.getNonce()));
-        result.add(RlpString.create(trueRawTransaction.getGasPrice()));
-        result.add(RlpString.create(trueRawTransaction.getGasLimit()));
+        result.add(RlpString.create(taiRawTransaction.getNonce()));
+        result.add(RlpString.create(taiRawTransaction.getGasPrice()));
+        result.add(RlpString.create(taiRawTransaction.getGasLimit()));
 
         // an empty to address (contract creation) should not be encoded as a numeric 0 value
-        String to = trueRawTransaction.getTo();
+        String to = taiRawTransaction.getTo();
         if (to != null && to.length() > 0) {
             // addresses that start with zeros should be encoded with the zeros included, not
             // as numeric values
@@ -141,17 +141,17 @@ public class TrueTransactionEncoder {
             result.add(RlpString.create(""));
         }
 
-        result.add(RlpString.create(trueRawTransaction.getValue()));
+        result.add(RlpString.create(taiRawTransaction.getValue()));
 
         // value field will already be hex encoded, so we need to convert into binary first
-        byte[] data = Numeric.hexStringToByteArray(trueRawTransaction.getData());
+        byte[] data = Numeric.hexStringToByteArray(taiRawTransaction.getData());
         result.add(RlpString.create(data));
 
-        result.add(RlpString.create(Numeric.hexStringToByteArray(trueRawTransaction.getPayment())));
-        if (trueRawTransaction.getFee() == null) {
+        result.add(RlpString.create(Numeric.hexStringToByteArray(taiRawTransaction.getPayment())));
+        if (taiRawTransaction.getFee() == null) {
             result.add(RlpString.create(0));
         } else {
-            result.add(RlpString.create(trueRawTransaction.getFee()));
+            result.add(RlpString.create(taiRawTransaction.getFee()));
         }
 
         if (signatureData != null) {
@@ -162,16 +162,16 @@ public class TrueTransactionEncoder {
         return result;
     }
 
-    static List<RlpType> asRlpValuesP(TrueRawTransaction trueRawTransaction, Sign.SignatureData signatureData,
+    static List<RlpType> asRlpValuesP(TaiRawTransaction taiRawTransaction, Sign.SignatureData signatureData,
                                       Sign.SignatureData signatureDataP) {
         List<RlpType> result = new ArrayList<>();
 
-        result.add(RlpString.create(trueRawTransaction.getNonce()));
-        result.add(RlpString.create(trueRawTransaction.getGasPrice()));
-        result.add(RlpString.create(trueRawTransaction.getGasLimit()));
+        result.add(RlpString.create(taiRawTransaction.getNonce()));
+        result.add(RlpString.create(taiRawTransaction.getGasPrice()));
+        result.add(RlpString.create(taiRawTransaction.getGasLimit()));
 
         // an empty to address (contract creation) should not be encoded as a numeric 0 value
-        String to = trueRawTransaction.getTo();
+        String to = taiRawTransaction.getTo();
         if (to != null && to.length() > 0) {
             // addresses that start with zeros should be encoded with the zeros included, not
             // as numeric values
@@ -180,18 +180,18 @@ public class TrueTransactionEncoder {
             result.add(RlpString.create(""));
         }
 
-        result.add(RlpString.create(trueRawTransaction.getValue()));
+        result.add(RlpString.create(taiRawTransaction.getValue()));
 
         // value field will already be hex encoded, so we need to convert into binary first
-        byte[] data = Numeric.hexStringToByteArray(trueRawTransaction.getData());
+        byte[] data = Numeric.hexStringToByteArray(taiRawTransaction.getData());
         result.add(RlpString.create(data));
 
-        result.add(RlpString.create(Numeric.hexStringToByteArray(trueRawTransaction.getPayment())));
+        result.add(RlpString.create(Numeric.hexStringToByteArray(taiRawTransaction.getPayment())));
         // result.add(RlpString.create(trueRawTransaction.getPayment()));
-        if (trueRawTransaction.getFee() == null) {
+        if (taiRawTransaction.getFee() == null) {
             result.add(RlpString.create(0));
         } else {
-            result.add(RlpString.create(trueRawTransaction.getFee()));
+            result.add(RlpString.create(taiRawTransaction.getFee()));
         }
 
         if (signatureData != null) {

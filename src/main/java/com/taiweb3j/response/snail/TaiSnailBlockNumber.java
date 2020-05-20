@@ -8,7 +8,7 @@ import java.math.BigInteger;
 /**
  * eth_True_blockNumber.
  */
-public class EtrueSnailBlockNumber extends Response<String> {
+public class TaiSnailBlockNumber extends Response<String> {
     public BigInteger getTrueBlockNumber() {
         return Numeric.decodeQuantity(getResult());
     }

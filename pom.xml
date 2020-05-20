@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.truechain</groupId>
+    <groupId>com.github.taiyuechain</groupId>
     <artifactId>taiWeb3j</artifactId>
     <version>4.5.5.8</version>
     <packaging>jar</packaging>
@@ -25,16 +25,16 @@
 
     <scm>
         <tag>master</tag>
-        <url>https://github.com/truechain/TaiWeb3j</url>
-        <connection>https://github.com/truechain/TaiWeb3j.git</connection>
-        <developerConnection>https://github.com/truechain/TaiWeb3j</developerConnection>
+        <url>https://github.com/taiyuechain/TaiWeb3j</url>
+        <connection>https://github.com/taiyuechain/TaiWeb3j.git</connection>
+        <developerConnection>https://github.com/taiyuechain/TaiWeb3j</developerConnection>
     </scm>
 
     <developers>
         <developer>
             <name>shuxunyer</name>
             <email>shuxunyer@163.com</email>
-            <organization>truechain.pro</organization>
+            <organization>taiyuechain.pro</organization>
         </developer>
     </developers>
 

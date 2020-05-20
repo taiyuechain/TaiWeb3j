@@ -14,11 +14,9 @@ package com.taiweb3j.response;
 
 import org.web3j.protocol.core.Response;
 
-/**
- * eth_hashrate.
- */
-public class EtrueSnailHash extends Response<String> {
-    public String getSnailHash() {
+/** eth_hashrate. */
+public class TaiCommitteeNumber extends Response<Integer> {
+    public Integer getCommitteeNumber() {
         return getResult();
     }
 }

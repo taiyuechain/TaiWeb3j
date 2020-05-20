@@ -12,37 +12,47 @@
  */
 package com.taiweb3j.response;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.taiweb3j.response.committee.CommitteeInfo;
+import com.taiweb3j.response.snail.SnailRewardContenet;
+import org.web3j.protocol.ObjectMapperFactory;
 import org.web3j.protocol.core.Response;
 
+import java.io.IOException;
 
-public class EtrueCommittee extends Response<CommitteeInfo> {
+
+public class TaiSnailRewardContent extends Response<SnailRewardContenet> {
 
     @Override
-    @JsonDeserialize(using = CommitteeInfo.ResponseDeserialiser.class)
-    public void setResult(CommitteeInfo result) {
-        super.setResult(result);
+    @JsonDeserialize(using = TaiSnailRewardContent.ResponseDeserialiser.class)
+    public void setResult(SnailRewardContenet snailRewardContenet) {
+        super.setResult(snailRewardContenet);
     }
 
-    public CommitteeInfo getCommittee() {
+    public SnailRewardContenet getSnailRewardContenet() {
         return getResult();
     }
 
+    public String getMessage() {
+        return super.getError().getMessage();
+    }
 
-    /*public static class ResponseDeserialiser extends JsonDeserializer<CommitteeMember> {
-
+    public static class ResponseDeserialiser extends JsonDeserializer<SnailRewardContenet> {
         private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
 
         @Override
-        public CommitteeMember deserialize(
+        public SnailRewardContenet deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
             if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                return objectReader.readValue(jsonParser, CommitteeMember.class);
+                return objectReader.readValue(jsonParser, SnailRewardContenet.class);
             } else {
                 return null; // null is wrapped by Optional in above getter
             }
         }
-    }*/
+    }
 }

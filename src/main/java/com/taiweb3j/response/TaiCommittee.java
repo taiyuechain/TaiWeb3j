@@ -12,47 +12,37 @@
  */
 package com.taiweb3j.response;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.taiweb3j.response.staking.AllStakingAccount;
-import org.web3j.protocol.ObjectMapperFactory;
+import com.taiweb3j.response.committee.CommitteeInfo;
 import org.web3j.protocol.core.Response;
 
-import java.io.IOException;
 
-
-public class EtrueAllStakingAccountInfo extends Response<AllStakingAccount> {
+public class TaiCommittee extends Response<CommitteeInfo> {
 
     @Override
-    @JsonDeserialize(using = EtrueAllStakingAccountInfo.ResponseDeserialiser.class)
-    public void setResult(AllStakingAccount allStakingAccount) {
-        super.setResult(allStakingAccount);
+    @JsonDeserialize(using = CommitteeInfo.ResponseDeserialiser.class)
+    public void setResult(CommitteeInfo result) {
+        super.setResult(result);
     }
 
-    public AllStakingAccount getAllStakingAccount() {
+    public CommitteeInfo getCommittee() {
         return getResult();
     }
 
-    public String getMessage() {
-        return super.getError().getMessage();
-    }
 
-    public static class ResponseDeserialiser extends JsonDeserializer<AllStakingAccount> {
+    /*public static class ResponseDeserialiser extends JsonDeserializer<CommitteeMember> {
+
         private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
 
         @Override
-        public AllStakingAccount deserialize(
+        public CommitteeMember deserialize(
                 JsonParser jsonParser, DeserializationContext deserializationContext)
                 throws IOException {
             if (jsonParser.getCurrentToken() != JsonToken.VALUE_NULL) {
-                return objectReader.readValue(jsonParser, AllStakingAccount.class);
+                return objectReader.readValue(jsonParser, CommitteeMember.class);
             } else {
-                return null;
+                return null; // null is wrapped by Optional in above getter
             }
         }
-    }
+    }*/
 }

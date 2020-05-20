@@ -34,15 +34,9 @@ public class Constant {
 
     public static String CURRENT_BLOCK_NUMBER = "tai_blockNumber";
 
-    public static String STAKING_ACCOUNT = "impawn_getStakingAccount";
-
-    public static String ALL_STAKING_ACCOUNT = "impawn_getAllStakingAccount";
-
     public static String CHAIN_REWARD_CONTENT = "tai_getChainRewardContent";
 
     public static String SNAIL_REWARD_CONTENT = "tai_getSnailRewardContent";
-
-    public static String FAST_BLOCK_OF_REWARD = "tai_getRewardBlock";
 
     public static String SNAIL_HASH_BY_NUMBER = "tai_getSnailHashByNumber";
 

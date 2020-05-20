@@ -20,9 +20,9 @@ import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 
-public class TrueTransactionDecoder {
+public class TaiTransactionDecoder {
 
-    public static TrueRawTransaction decode(final String hexTransaction) {
+    public static TaiRawTransaction decode(final String hexTransaction) {
         final byte[] transaction = Numeric.hexStringToByteArray(hexTransaction);
         final RlpList rlpList = RlpDecoder.decode(transaction);
         final RlpList values = (RlpList) rlpList.getValues().get(0);
@@ -43,7 +43,7 @@ public class TrueTransactionDecoder {
                         && ((RlpString) values.getValues().get(10)).getBytes().length == 12)) {
             // the 8th or 9nth element is the hex
             // representation of "restricted" for private transactions
-            return TrueRawTransaction.createTruePaymentAndFeeTransaction(nonce, gasPrice, gasLimit, to, value, data,fee,payment);
+            return TaiRawTransaction.creattaiPaymentAndFeeTransaction(nonce, gasPrice, gasLimit, to, value, data,fee,payment);
         } else {
             final byte[] v = ((RlpString) values.getValues().get(8)).getBytes();
             final byte[] r =
@@ -55,7 +55,7 @@ public class TrueTransactionDecoder {
                             Numeric.toBigInt(((RlpString) values.getValues().get(10)).getBytes()),
                             32);
             final Sign.SignatureData signatureData = new Sign.SignatureData(v, r, s);
-            return new SignedTrueRawTransaction(
+            return new SignedTaiRawTransaction(
                     nonce, gasPrice, gasLimit, to, value, data,fee,payment ,signatureData);
         }
     }
