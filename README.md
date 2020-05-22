@@ -14,7 +14,7 @@
 
 ### Jar包本地部署
 
- 在工程主目录建立 `src` 同级lib目录并将`taiWeb3jxxx.jar`拷贝进去并在 `pom.xml` 中增加引用
+[下载最新的Jar包](https://github.com/taiyuechain/TaiWeb3j/releases)， 在工程主目录建立`src`同级 **`lib`** 目录并将`taiWeb3jxxx.jar`拷贝进去，并在 `pom.xml` 中增加引用
 
 ```java
 <dependency>
