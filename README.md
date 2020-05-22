@@ -2,7 +2,7 @@
 
 ###  Maven 引用
 
-```
+```java
 <dependency>
     <groupId>com.taiyuechain</groupId>
     <artifactId>taiWeb3j</artifactId>
@@ -44,7 +44,7 @@
 
 
 
-## SDK使用实例
+## 使用实例
 
 
 ### 链相关
@@ -219,9 +219,9 @@ public String sendPaymentTx() {
 
 
 
-### Erc20代币相关
+### ERC20 代币相关
 
-#### ERC20交易
+#### 交易
 
 ```java
  public void sendTokenTransaction(String contractAddress, String toAddress, String from_privateKey) {
@@ -462,6 +462,14 @@ GasLimit:30000(普通交易)/60000(ERC20)
 
 ## 更多支持
 
-测试用例：https://github.com/taiyuechain/TaiWeb3j/tree/master/src/test/java
+### 测试用例
 
-Git官网：https://github.com/taiyuechain
+#### 		https://github.com/taiyuechain/TaiWeb3j/tree/master/src/test/java
+
+### Git官网
+
+#### 		https://github.com/taiyuechain
+
+### 官网
+
+#### 		https://www.taiyuechain.com/
