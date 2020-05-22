@@ -15,20 +15,4 @@ public class RewardTest extends TaiWeb3jRequestTest {
         rewardUsage.getSnailBalanceChange();
     }
 
-    @Test
-    public void testGetSnailRewardContent() {
-        rewardUsage.getSnailRewardContent();
-    }
-
-    @Test
-    public void getSnailRewardContent_Old() {
-        rewardUsage.getSnailRewardContent_Old();
-    }
-
-    @Test
-    public void testGetAddressesSnailReward() {
-        rewardUsage.getAddressesSnailReward();
-    }
-
-
 }

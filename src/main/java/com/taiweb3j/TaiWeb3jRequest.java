@@ -1,30 +1,20 @@
 package com.taiweb3j;
 
-import com.taiweb3j.common.AddressConstant;
 import com.taiweb3j.common.Constant;
-import com.taiweb3j.response.Reward.ChainRewardContent;
-import com.taiweb3j.response.Reward.RewardInfo;
-import com.taiweb3j.response.Reward.SARewardInfos;
 import com.taiweb3j.response.*;
 import com.taiweb3j.response.committee.CommitteeInfo;
 import com.taiweb3j.response.fast.FastBlock;
 import com.taiweb3j.response.snail.BalanceChange;
 import com.taiweb3j.response.snail.FastBalanceChange;
 import com.taiweb3j.response.snail.SnailBlock;
-import com.taiweb3j.response.snail.SnailRewardContenet;
-import org.apache.commons.lang3.StringUtils;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.core.DefaultBlockParameter;
-import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.Request;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TaiWeb3jRequest {
@@ -132,112 +122,6 @@ public class TaiWeb3jRequest {
             e.printStackTrace();
         }
         return addrWithBalance;
-    }
-
-    /**
-     * get snail reward content by snail number
-     * inclued blockminer、fruitminer、committeReward、foundationReward
-     * <p>
-     * <p>
-     * attention:getSnailRewardContent get by rpc of "tai_getChainRewardContent"
-     *
-     * @param snailNumber
-     * @return
-     */
-    public ChainRewardContent getSnailRewardContent(BigInteger snailNumber) {
-        ChainRewardContent chainRewardContent = null;
-        if (snailNumber == null) {
-            return null;
-        }
-        DefaultBlockParameter blockParameter = DefaultBlockParameter.valueOf(snailNumber);
-        try {
-            TaiChainRewardContent taiChainRewardContent = new Request<>(
-                    Constant.CHAIN_REWARD_CONTENT,
-                    Arrays.asList(blockParameter.getValue(), AddressConstant.EMPTY_ADDRESS),
-                    web3jService,
-                    TaiChainRewardContent.class).send();
-            chainRewardContent = taiChainRewardContent.getChainRewardContent();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return chainRewardContent;
-    }
-
-    public SnailRewardContenet getSnailRewardContent_Old(BigInteger snailNumber) {
-        SnailRewardContenet snailRewardContenet = null;
-        if (snailNumber == null) {
-            return null;
-        }
-        DefaultBlockParameter blockParameter = DefaultBlockParameter.valueOf(snailNumber);
-        try {
-            TaiSnailRewardContent taiSnailRewardContent = new Request<>(
-                    Constant.SNAIL_REWARD_CONTENT,
-                    Arrays.asList(blockParameter.getValue()),
-                    web3jService,
-                    TaiSnailRewardContent.class).send();
-            snailRewardContenet = taiSnailRewardContent.getSnailRewardContenet();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return snailRewardContenet;
-    }
-
-
-    /**
-     * get gather addresses snail reward by snailNumber
-     *
-     * @param snailNumber
-     * @return
-     */
-    public Map<String, BigInteger> getAddressesSnailReward(BigInteger snailNumber) {
-        //慢链奖励中涉及所有的地址
-        Map<String, BigInteger> snailRewardWithAddr = new HashMap<String, BigInteger>();
-        ChainRewardContent chainRewardContent = getSnailRewardContent(snailNumber);
-        if (chainRewardContent == null) {
-            return snailRewardWithAddr;
-        }
-
-        RewardInfo minerRewardInfo = chainRewardContent.getBlockminer();
-        gatherAddressBalance(snailRewardWithAddr, minerRewardInfo);
-
-        RewardInfo developerReward = chainRewardContent.getDeveloperReward();
-        gatherAddressBalance(snailRewardWithAddr, developerReward);
-
-        List<RewardInfo> fruitRewardInfos = chainRewardContent.getFruitminer();
-        if (fruitRewardInfos != null && fruitRewardInfos.size() != 0) {
-            for (RewardInfo fruitRewardInfo : fruitRewardInfos) {
-                gatherAddressBalance(snailRewardWithAddr, fruitRewardInfo);
-            }
-        }
-
-        List<SARewardInfos> saRewardInfosList = chainRewardContent.getCommitteeReward();
-        if (saRewardInfosList != null && saRewardInfosList.size() > 0) {
-            for (SARewardInfos saRewardInfo : saRewardInfosList) {
-                if (saRewardInfo != null && saRewardInfo.getItems() != null
-                        && saRewardInfo.getItems().size() != 0) {
-                    for (RewardInfo committeeRewardInfo : saRewardInfo.getItems()) {
-                        gatherAddressBalance(snailRewardWithAddr, committeeRewardInfo);
-                    }
-                }
-            }
-        }
-        return snailRewardWithAddr;
-    }
-
-    private Map<String, BigInteger> gatherAddressBalance(
-            Map<String, BigInteger> snailRewardWithAddr, RewardInfo rewardInfo) {
-        if (rewardInfo == null) {
-            return snailRewardWithAddr;
-        }
-        String address = rewardInfo.getAddress();
-        if (snailRewardWithAddr.get(address) != null) {
-            BigInteger balance = snailRewardWithAddr.get(address);
-            balance = balance.add(rewardInfo.getAmount());
-            snailRewardWithAddr.put(address, balance);
-        } else {
-            snailRewardWithAddr.put(address, rewardInfo.getAmount());
-        }
-        return snailRewardWithAddr;
     }
 
 

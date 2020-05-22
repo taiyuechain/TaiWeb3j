@@ -39,10 +39,4 @@ public class SnailBlockUsage extends TaiWeb3jTestNet {
         Map<String, String> addrWithBalance = taiWeb3JRequest.getSnailBalanceChange(snailNumber);
         logger.info("addrWithBalance=[{}]", addrWithBalance.toString());
     }
-
-    public void getSnailRewardContent() {
-        BigInteger snailNumber = new BigInteger("100");
-        ChainRewardContent chainRewardContent = taiWeb3JRequest.getSnailRewardContent(snailNumber);
-        logger.info("chainRewardContent=[{}]", chainRewardContent);
-    }
 }

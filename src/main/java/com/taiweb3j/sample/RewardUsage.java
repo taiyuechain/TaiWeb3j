@@ -1,8 +1,5 @@
 package com.taiweb3j.sample;
 
-import com.taiweb3j.response.Reward.ChainRewardContent;
-import com.taiweb3j.response.fast.FastBlock;
-import com.taiweb3j.response.snail.SnailRewardContenet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,29 +16,5 @@ public class RewardUsage extends TaiWeb3jTestNet {
         BigInteger snailNumber = new BigInteger("2");
         Map<String, String> addrWithBalance = taiWeb3JRequest.getSnailBalanceChange(snailNumber);
         logger.info("addrWithBalance=[{}]", addrWithBalance);
-    }
-
-
-    /**
-     * get snailReward content  by snailNumber
-     * call tai_getChainRewardContent by empty address
-     */
-    public void getSnailRewardContent() {
-        BigInteger snailNumber = new BigInteger("55000");
-        ChainRewardContent snailChainRewardContent = taiWeb3JRequest.getSnailRewardContent(snailNumber);
-        System.out.println("snailChainRewardContent=" + snailChainRewardContent.toString());
-    }
-
-    public void getSnailRewardContent_Old() {
-        BigInteger snailNumber = new BigInteger("55000");
-        SnailRewardContenet snailRewardContenet = taiWeb3JRequest.getSnailRewardContent_Old(snailNumber);
-        System.out.println("snailRewardContenet=" + snailRewardContenet.toString());
-    }
-
-
-    public void getAddressesSnailReward() {
-        BigInteger snailNumber = new BigInteger("2");
-        Map<String, BigInteger> addressSnailReward = taiWeb3JRequest.getAddressesSnailReward(snailNumber);
-        logger.info("addressSnailReward=[{}]", addressSnailReward);
     }
 }

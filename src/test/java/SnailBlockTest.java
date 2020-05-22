@@ -38,10 +38,5 @@ public class SnailBlockTest extends TaiWeb3jRequestTest {
         snailBlockUsage.getSnailBalanceChange();
     }
 
-    @Test
-    public void testGetSnailRewardContent() {
-        snailBlockUsage.getSnailRewardContent();
-    }
-
 
 }
