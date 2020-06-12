@@ -15,6 +15,6 @@ public class AddressConstant {
     public static String toAddress = "0x8926A8D6c4480205a73dbc7712E8578827ce84fB";
 
     //er20代币合约地址
-    public static String contractAddress = "0x88657348F65920BF54FAc2982775609D636c4701";
+    public static String contractAddress = "0x00321aF6009D49e7dF874Ed57Adb242ffF4059b1";
 
 }
